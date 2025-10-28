@@ -1,28 +1,16 @@
+#include "uart_ee627.h"
 #include <stdint.h>
-
-int series_sum(int n)
-{
-    volatile int x = 3;
-    volatile int y = 5;
-    volatile int z = 7;
-    volatile int p = 9;
-    volatile int q = 11;
-
-    if (n > 0)
-    {
-        return n + series_sum(n - 1);
-    }
-    else
-    {
-        return 0;
-    }
-}
 
 int main(void)
 {
-    int result;
-    int k = 10;
+    UART_setup();     // Initialize UART0
 
-    result = series_sum(k); // Compute sum of 1+2+...+10
-    while (1); // Infinite loop for stack observation
+    while (1)
+    {
+        UART_send(0x55);  // Send the byte 0x55
+        for (volatile int i = 0; i < 1000000; i++);  // Simple delay loop
+
+        UART_send(0xAA);  // Send the byte 0xAA
+        for (volatile int i = 0; i < 1000000; i++);  // Simple delay loop
+    }
 }
